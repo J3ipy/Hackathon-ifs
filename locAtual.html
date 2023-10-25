@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Endereços</title>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cadastro de Endereços</h1>
+    <div id="map"></div>
+    <form>
+        <label for="endereco">Endereço:</label>
+        <input type="text" id="endereco" name="endereco">
+        <br>
+        <label for="cep">CEP:</label>
+        <input type="text" id="cep" name="cep">
+        <br>
+        <label for="referencia">Referência:</label>
+        <input type="text" id="referencia" name="referencia">
+        <br>
+        <label for="uf">UF:</label>
+        <input type="text" id="uf" name="uf">
+    </form>
+
+    <script>
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: -23.550520, lng: -46.633308 }, // Coordenadas de São Paulo
+                zoom: 14
+            });
+
+            const geocoder = new google.maps.Geocoder();
+            const infoWindow = new google.maps.InfoWindow();
+
+            // Obter a localização atual do usuário
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    const userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    map.setCenter(userLocation);
+
+                    // Obter informações do endereço a partir das coordenadas
+                    geocoder.geocode({ location: userLocation }, (results, status) => {
+                        if (status === 'OK') {
+                            if (results[0]) {
+                                const addressComponents = results[0].address_components;
+                                const formattedAddress = results[0].formatted_address;
+
+                                document.getElementById('endereco').value = formattedAddress;
+
+                                // Preencher os campos com base nos componentes do endereço
+                                addressComponents.forEach((component) => {
+                                    if (component.types.includes('postal_code')) {
+                                        document.getElementById('cep').value = component.long_name;
+                                    } else if (component.types.includes('administrative_area_level_1')) {
+                                        document.getElementById('uf').value = component.short_name;
+                                    }
+                                });
+                            } else {
+                                window.alert('Nenhum resultado encontrado para a localização atual.');
+                            }
+                        } else {
+                            window.alert('Geocoding falhou devido a: ' + status);
+                        }
+                    });
+                }, () => {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                });
+            } else {
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+        }
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                'Erro: O serviço de geolocalização falhou.' :
+                'Erro: Seu navegador não suporta geolocalização.');
+            infoWindow.open(map);
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3s2YK9zXeD-0H3TVrMWlYDT_9kXlskfU
+    &libraries=places&callback=initMap" async defer></script>
+</body>
+</html>
