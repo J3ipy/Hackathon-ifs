@@ -154,6 +154,7 @@ body {
     padding: 0.62rem;
     border-radius: 5px;
     cursor: pointer;
+    margin-top: 10px;
 }
 
 .continue-button button:hover {
@@ -166,6 +167,17 @@ body {
     font-weight: 500;
     color: #fff;
 }
+
+#forgot_password a {
+    text-decoration: none;
+    color: var(--color-dark-50);
+    font-size: 15px;
+    margin: 2px;
+}
+
+#forgot_password a:hover {
+    color: #9B4DE1;
+}   
 
 @media screen and (max-width: 1330px) {
     .form-image {
