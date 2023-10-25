@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./addtocart.css">
+    <script src="https://kit.fontawesome.com/92d70a2fd8.js" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="containerpai">
+        <div id="map">
+        </div>
+        <div class="pedido">
+            <div class="containerpedidos">
+                <div class="container02">
+                    <div id="pedido-form">
+                        <div>
+                            <label for="endereco">Endereço de Entrega:</label>
+                            <input type="text" id="endereco" placeholder="Endereço de entrega">
+                        </div>
+                    </div>
+            
+                    <!-- Lista de Pedidos Criados -->
+                    <h2>Lista de Pedidos</h2>
+                    <ul id="lista-pedidos">
+                    </ul>
+            
+                    <!-- Mapa para exibir as rotas dos pedidos -->
+                    <h2>Rota de Entrega</h2>
+                    <div id="map"></div>
+            
+                    <!-- Tempo Estimado para Entrega -->
+                    <h2>Tempo Estimado de Entrega</h2>
+                    <p id="tempo-estimado"></p>
+                </div>
+                
+            
+                <script>
+                    // Array para armazenar os pedidos
+                    const pedidos = [];
+            
+                    // Endereço do estabelecimento Quero Mercado
+                    const estabelecimentoEndereco = "R.Limoeiro 2-316, Horta, Lagarto, SE, 49400-000";
+            
+                    // Função para adicionar um pedido
+                    function adicionarPedido() {
+                        const itens = document.getElementById("itens").value;
+                        const endereco = document.getElementById("endereco").value;
+            
+                        if (itens && endereco) {
+                            const pedido = { itens: itens.split(','), endereco, tempoEstimado: '' };
+                            pedidos.push(pedido);
+                            document.getElementById("itens").value = "";
+                            document.getElementById("endereco").value = "";
+            
+                            atualizarListaPedidos();
+                            atualizarRotaEntrega();
+                        }
+                    }
+            
+                    // Função para atualizar a lista de pedidos
+                    function atualizarListaPedidos() {
+                        const listaPedidos = document.getElementById("lista-pedidos");
+                        listaPedidos.innerHTML = "";
+                        pedidos.forEach((pedido, index) => {
+                            const li = document.createElement("li");
+                            li.innerText = `Pedido ${index + 1}: Itens: ${pedido.itens.join(', ')} - Endereço de entrega: ${pedido.endereco} - Tempo Estimado: ${pedido.tempoEstimado}`;
+                            listaPedidos.appendChild(li);
+                        });
+                    }
+            
+                    // Função para atualizar o mapa com a rota de entrega
+                    function atualizarRotaEntrega() {
+                        const directionsService = new google.maps.DirectionsService();
+                        const directionsRenderer = new google.maps.DirectionsRenderer();
+                        const map = new google.maps.Map(document.getElementById('map'), {
+                            center: { lat: -10.919378, lng: -37.651211 }, // Coordenadas do centro do mapa (ajuste conforme necessário)
+                            zoom: 10, // Nível de zoom do mapa
+                        });
+                        directionsRenderer.setMap(map);
+            
+                        // Crie uma matriz de paradas para incluir o endereço de entrega
+                        const paradas = pedidos.map(pedido => {
+                            return {
+                                location: pedido.endereco,
+                                stopover: true
+                            };
+                        });
+            
+                        // Calcule a rota até o estabelecimento com as paradas
+                        const request = {
+                            origin: estabelecimentoEndereco,
+                            destination: estabelecimentoEndereco, // O destino é o próprio estabelecimento
+                            travelMode: google.maps.TravelMode.DRIVING,
+                            waypoints: paradas
+                        };
+            
+                        directionsService.route(request, function(response, status) {
+                            if (status === 'OK') {
+                                directionsRenderer.setDirections(response);
+            
+                                // Calcula o tempo total estimado e atualiza a lista de pedidos
+                                const rota = response.routes[0].legs;
+                                let tempoTotalSegundos = 0;
+                                for (let i = 0; i < pedidos.length; i++) {
+                                    const leg = rota[i];
+                                    pedidos[i].tempoEstimado = leg.duration.text;
+                                    tempoTotalSegundos += leg.duration.value;
+                                }
+                                const tempoTotalMinutos = Math.ceil(tempoTotalSegundos / 60);
+            
+                                document.getElementById("tempo-estimado").innerText = `Tempo estimado de entrega total: ${tempoTotalMinutos} minutos`;
+                                atualizarListaPedidos();
+                            }
+                        });
+                    }
+                </script>
+            
+                <!-- Carregar a API do Google Maps com a chave de API -->
+                <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3s2YK9zXeD-0H3TVrMWlYDT_9kXlskfU&libraries=places&callback=initMap"></script>
+            </div>
+        </div>
+        <div class="containercarro">
+            <div class="header">
+                <p class="logo"><img src="https://play-lh.googleusercontent.com/QJ7kiah5SIHs16u1xapItWu40tuLkkED0s4_4Rk67sDymIXpZWv6QXAgmsfbQnqaPQ" alt=""></p>
+                <div class="cart"><i class="fa-solid fa-cart-shopping"></i><p id="count">0</p></div>
+            </div>
+            <div class="container">
+                <div id="root"></div>
+                <div class="sidebar">
+                    <div class="head"><p>Meu Carrinho</p></div>
+                    <div id="cartItem">Seu carrinho está vazio</div>
+                    <div class="foot">
+                        <h3>Total</h3>
+                        <h2 id="total">R$ 0.00</h2>
+                        <button onclick="adicionarPedido()">Adicionar Pedido</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./addtocart.js"></script>
+</body>
+</html>
