@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <style rel="stylesheet" type="text/css" href="/assets/css/style.css"></style>
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário</title>
+</head>
+
+<body>
+    <div class="container">
+        <div id="map"></div>     
+        <div class="form">
+            <form action="#">
+                <div class="form-header">
+                    <div class="title">
+                        <h1>Cadastre Endereço</h1>
+                    </div>
+
+                </div>
+
+                <div class="input-group">
+                    <div class="input-box">
+                        <label for="endereco">Endereço</label>
+                        <input id="endereco" type="text" name="endereco" placeholder="Digite seu endereço">
+                    </div>
+
+                    <div class="input-box">
+                        <label for="cep">CEP</label>
+                        <input id="cep" type="tel" name="cep" placeholder="xxxx-xxxx">
+                    </div>
+
+                    <div class="input-box">
+                        <label for="uf">UF</label>
+                        <input id="uf" type="text" name="uf" placeholder="" >
+                    </div>
+
+                    <div class="input-box">
+                        <label for="referencia">Complemento</label>
+                        <input id="referencia" type="text" name="referencia" placeholder="I">
+                    </div>
+
+                </div>
+
+                <div class="continue-button">
+                    <button onclick="save()"><a target="_self" href="start.html">Salvar </a></button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="./assets/script/script.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3s2YK9zXeD-0H3TVrMWlYDT_9kXlskfU
+    &libraries=places&callback=initMap" async defer></script>
+</body>
+
+</html>
