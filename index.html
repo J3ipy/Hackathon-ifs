@@ -12,9 +12,7 @@
 
 <body>
     <div class="container">
-        <div class="form-image">
-            <img src="https://republicanos10.org.br/wp-content/uploads/2022/02/Descomplicando-a-Politica-1.jpg" alt="">
-        </div>
+        <div id="map"></div>     
         <div class="form">
             <form action="#">
                 <div class="form-header">
@@ -28,44 +26,23 @@
 
                 <div class="input-group">
                     <div class="input-box">
-                        <label for="adress">Endereço</label>
-                        <input id="adress" type="text" name="adress" placeholder="Digite seu endereço" required>
+                        <label for="endereco">Endereço</label>
+                        <input id="endereco" type="text" name="endereco" placeholder="Digite seu endereço" required>
                     </div>
 
                     <div class="input-box">
-                        <label for="neighborhood">Bairro</label>
-                        <input id="neighborhood" type="text" name="neighborhood" placeholder="Digite seu bairro" required>
-                    </div>
-                    <div class="input-box">
-                        <label for="CEP">CEP</label>
-                        <input id="CEP" type="tel" name="CEP" placeholder="xxxx-xxxx" required>
+                        <label for="cep">CEP</label>
+                        <input id="cep" type="tel" name="cep" placeholder="xxxx-xxxx" required>
                     </div>
 
                     <div class="input-box">
-                        <label for="municipio">Municipio</label>
-                        <input id="municipio" type="text" name="municipio" placeholder="" required>
+                        <label for="uf">UF</label>
+                        <input id="uf" type="text" name="uf" placeholder="" required>
                     </div>
 
                     <div class="input-box">
-                        <label for="UF">UF</label>
-                        <input id="UF" type="text" name="UF" placeholder="" required>
-                    </div>
-
-
-                    <div class="input-box">
-                        <label for="Numero">N°</label>
-                        <input id="Numero" type="tel" name="Numero" placeholder="Digite o número" required>
-                    </div>
-
-                    <div class="input-box">
-                        <label for="comp">Complemento</label>
-                        <input id="comp" type="text" name="comp" placeholder="I">
-                    </div>
-
-
-                    <div class="input-box">
-                        <label for="REF">Referência </label>
-                        <input id="REF" type="text" name="REF" placeholder="Digite uma Referência" required>
+                        <label for="referencia">Complemento</label>
+                        <input id="referencia" type="text" name="referencia" placeholder="I">
                     </div>
 
                 </div>
@@ -77,6 +54,8 @@
         </div>
     </div>
     <script src="./assets/script/script.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3s2YK9zXeD-0H3TVrMWlYDT_9kXlskfU
+    &libraries=places&callback=initMap" async defer></script>
 </body>
 
 </html>
